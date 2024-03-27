@@ -1,0 +1,7 @@
+{
+    "AppSyncApiName": "photosharing",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "S3DeploymentBucket": "amplify-photosharing-dev-132714-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/568b98a3c905ef5df188519dec01e3c9a9fe9815"
+}

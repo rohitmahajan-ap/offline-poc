@@ -1,0 +1,25 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Asset @model {
+  category: String
+  description: String
+  id: String
+  name: String
+}
+
+type Mutation @model {
+  addAssets(input: AssetInput!): Asset
+}
+
+type Query @model {
+  getAssets: [Asset]
+}
+
+input AssetInput {
+  category: String!
+  description: String
+  name: String!
+}
