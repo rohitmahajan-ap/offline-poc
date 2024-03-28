@@ -95,14 +95,14 @@ class SignInActivity : AppCompatActivity() {
                )
 
            Amplify.API.query(requestGetAssets, { response ->
-               Log.e("Amplify","${response.data}")
+               Log.e("AmplifyData","${response.data}")
 
            }, { error ->
-               Log.e("Amplify","error ${error}")
+               Log.e("AmplifyData","error ${error}")
            })
        }
        catch (e:Exception){
-           Log.e("Amplify","error ${e}")
+           Log.e("AmplifyData","error ${e}")
     }
 }
 
