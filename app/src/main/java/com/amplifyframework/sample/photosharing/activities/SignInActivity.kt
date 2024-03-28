@@ -12,6 +12,7 @@ import com.amplifyframework.api.graphql.SimpleGraphQLRequest
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.category.CategoryConfiguration
 import com.amplifyframework.core.category.CategoryType
+import com.amplifyframework.datastore.generated.model.Asset
 import com.amplifyframework.sample.photosharing.databinding.ActivitySignInBinding
 import com.amplifyframework.util.TypeMaker
 import okhttp3.Interceptor
@@ -34,7 +35,7 @@ class SignInActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.createAsset.setOnClickListener {
-            createAssets("Test description","Gadgets","Laptop")
+            createAssets("android_description_L1","G1","L1")
         }
 
         binding.getAsset.setOnClickListener {
@@ -47,7 +48,7 @@ class SignInActivity : AppCompatActivity() {
 
     private fun createAssets(description:String,category: String,name:String) {
         try {
-            val mutationCreateAssets = ("mutation MyMutation(\$input: Input!) {\n" +
+            val mutationCreateAssets = ("mutation MyMutation(\$input: AWSJSON!) {\n" +
                     "  addAssets(input: \$input) {\n" +
                     "    category\n" +
                     "    description\n" +
@@ -55,16 +56,26 @@ class SignInActivity : AppCompatActivity() {
                     "    id\n" +
                     "  }\n" +
                     "}")
-            val variables = mapOf("input" to mapOf("description" to description, "category" to category,"name" to name))
-            val requestGetAssets: GraphQLRequest<String> =
+
+            val mt="""mutation MyMutation {
+  addAssets(input: {description: "$description", category: "$category", name: "$name"}) {
+    category
+    description
+    name
+    id
+  }
+}"""
+            //val variables = mapOf("input" to mapOf("description" to description, "category" to category,"name" to name))
+            val requestGetAssets: GraphQLRequest<Asset> =
                 SimpleGraphQLRequest(
-                    mutationCreateAssets,variables,
-                    TypeMaker.getParameterizedType(String::class.java),
+                    mt,
+                    TypeMaker.getParameterizedType(Asset::class.java),
                     GsonVariablesSerializer(),
 
                 )
             Amplify.API.mutate(requestGetAssets, { response ->
-                Log.e("AmplifyData","success ${response.data}")
+                Log.e("AmplifyData","success ${response.errors}")
+
 
             }, { error ->
                 Log.e("AmplifyData","error ${error}")
